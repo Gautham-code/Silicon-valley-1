@@ -1,0 +1,96 @@
+var PLAY=1;
+var END=0;
+var gameState=PLAY;
+//playSound("sound://category_background/repitition.mp3", false);
+var ground;
+var player;
+var player_img;
+var itemGroup;
+var count=0;
+var coin;
+ var coin_img;
+
+function preload(){
+coin_img = loadImage("coin.jpeg");
+ player_img = loadAnimation("ascreed1.tiff","ascreed2.tiff","ascreed3.tiff")
+
+
+}
+function setup(){
+   ground = createSprite(200,400,400,10);
+  //ground.setAnimation("last.png_1");
+
+//ground.scale=2.0;
+ground.x=ground.width/2;
+
+ player = createSprite(50, 400,20,50);
+player.addAnimation("player",player_img);
+//player.scale=0.5;
+itemGroup=new Group();
+ objectGroup=new Group();
+
+}
+
+
+
+
+//player.setCollider("circle",0,0,40);
+
+ 
+
+
+
+
+
+function draw() {
+   background("white");
+   //display score
+   fill("purple");
+   textSize(20);
+   text("SCORE:"+count,40,35);
+   
+ 
+   player.collide(ground);
+   
+    if(gameState===PLAY){
+      ground.velocityX=-6;
+      //count=Math.round(World.frameCount/6);
+       if(ground.x<0){
+      ground.x=ground.width/2;
+    }
+    player.velocityY=player.velocityY+0.8;
+   
+   
+    if(keyDown("space")){
+        player.velocityY =-10;
+       }
+   if(player.isTouching(itemGroup)){
+     itemGroup.destroyEach();
+    // playSound("sound://category_pop/cute_water_bubble.mp3");
+     count=count+1;
+     }
+     if(player.isTouching(objectGroup)){
+       gameState=END;
+       
+     }
+   coins();
+   Obstacle();
+  }
+     else if(gameState===END){
+       fill("purple");
+       text("GAME OVER :(",100,200);
+      // stopSound("sound://category_background/repitition.mp3");
+       player.destroy();
+      ground.velocityX=0;
+      itemGroup.setVisibleEach(0);
+     
+     }
+    createEdgeSprites();
+  //  player.bounceOff(topEdge);
+   // player.bounceOff(rightEdge);
+   // player.bounceOff(leftEdge);
+   // player.bounceOff(bottomEdge);
+    drawSprites();
+    }
+
+ 
